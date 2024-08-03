@@ -3,15 +3,15 @@
 require "syskit/test/self"
 
 module Syskit
-    module RobyApp
-        describe UnmanagedTasksManager do
+    module ProcessManagers
+        describe Unmanaged do
             attr_reader :process_manager, :task_model, :unmanaged_task, :deployment_task
 
             describe "using the default name service" do
                 before do
                     @task_model = Syskit::TaskContext.new_submodel
                     Syskit.conf.register_process_server(
-                        "unmanaged_tasks", UnmanagedTasksManager.new
+                        "unmanaged_tasks", Unmanaged::Manager.new
                     )
                     @process_manager = Syskit.conf.process_server_for("unmanaged_tasks")
                     use_unmanaged_task task_model => "unmanaged_deployment_test"
@@ -157,7 +157,7 @@ module Syskit
                     @name_service = Orocos::Local::NameService.new
                     Syskit.conf.register_process_server(
                         "new_unmanaged_tasks",
-                        UnmanagedTasksManager.new(name_service: name_service)
+                        Unmanaged::Manager.new(name_service: name_service)
                     )
                     @process_manager =
                         Syskit.conf.process_server_for("new_unmanaged_tasks")
